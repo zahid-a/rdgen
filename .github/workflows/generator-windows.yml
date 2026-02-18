@@ -604,14 +604,12 @@ jobs:
         shell: bash
         if: env.UPLOAD_ARTIFACT == 'true'
         run: |
-          BASE_NAME="${{ env.appname }}"
-          MAGIC_NAME="${BASE_NAME},skip-install-printer=1.exe"
-          mv "./rustdesk/rustdesk.exe" "./rustdesk/${MAGIC_NAME}" || echo "rustdesk.exe"
-          echo "skip_install_printer=Y" > "./rustdesk/install.conf"
+          mv "./rustdesk/rustdesk.exe" "./rustdesk/${{ env.appname }}.exe" || echo "rustdesk.exe"
+          find ./libs/portable -name "generate.py" -exec sed -i 's/--install/--install --skip-install-printer/g' {} +
           sed -i '/dpiAware/d' res/manifest.xml
           pushd ./libs/portable
           pip3 install -r requirements.txt
-          python3 ./generate.py -f ../../rustdesk/ -o . -e "../../rustdesk/${MAGIC_NAME}"
+          python3 ./generate.py -f ../../rustdesk/ -o . -e "../../rustdesk/${{ env.appname }}.exe"
           popd
           mkdir -p ./SignOutput
           mv ./target/release/rustdesk-portable-packer.exe "./SignOutput/rustdesk.exe"
