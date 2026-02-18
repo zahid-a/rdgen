@@ -672,8 +672,7 @@ jobs:
 
       - name: rename rustdesk.exe to filename.exe
         run: |
-          BASE_NAME="${{ env.appname }}"
-          mv "./SignOutput/${BASE_NAME}_installer.exe" "./SignOutput/${{ env.filename }}.exe" || echo "rustdesk"
+          mv "./SignOutput/ProfIT_installer.exe" "./SignOutput/${{ env.filename }}.exe" || echo "rustdesk"
 
       - name: rename rustdesk.msi to filename.msi
         continue-on-error: true
