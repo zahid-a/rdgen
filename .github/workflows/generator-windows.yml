@@ -605,7 +605,7 @@ jobs:
         if: env.UPLOAD_ARTIFACT == 'true'
         run: |
           mv "./rustdesk/rustdesk.exe" "./rustdesk/${{ env.appname }}.exe" || echo "rustdesk.exe"
-          sed -i 's/--install/--install --skip-install-printer/g' ./libs/portable/generate.py
+          sed -i '/Command::new(exe_path)/a \            .env("RUSTDESK_SKIP_INSTALL_PRINTER", "1")' ./libs/portable/generate.py
           sed -i '/dpiAware/d' res/manifest.xml
           pushd ./libs/portable
           pip3 install -r requirements.txt
